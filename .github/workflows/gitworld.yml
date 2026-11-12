@@ -1,0 +1,40 @@
+# 최근 1년 커밋으로 도시 그림(dist/gitworld.svg)을 매일 다시 그린다.
+# 외부 Action은 검토한 커밋으로 고정했다. 업데이트하려면 새 커밋을 검토한 뒤 SHA를 바꾼다.
+name: GitWorld
+
+on:
+  schedule:
+    - cron: '17 18 * * *'   # 매일 03:17 (한국 시간)
+  workflow_dispatch:         # Actions 탭에서 직접 실행
+  push:
+    branches: [main]
+    paths: ['.github/workflows/gitworld.yml']   # 이 파일을 바꿀 때 한 번 실행
+
+permissions:
+  contents: write
+
+concurrency:
+  group: gitworld
+  cancel-in-progress: false
+
+jobs:
+  draw:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Draw the city
+        # Dasmat13/git-world-action (2026-11-11 main)
+        uses: Dasmat13/git-world-action@36f26cb1a399f3841a6dff90b1131068d0810752
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          svg_out_path: dist/gitworld.svg
+
+      - name: Commit the city
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/gitworld.svg
+          git diff --cached --quiet || git commit -m "🌍 GitWorld 업데이트 $(date -u +'%Y-%m-%d')"
+          git push
