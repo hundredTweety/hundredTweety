@@ -1,0 +1,36 @@
+# 네이버 블로그 SSAFY 카테고리 최신 글 3개를 README에 넣는다. 일상 글은 넣지 않는다.
+name: Blog posts
+
+on:
+  schedule:
+    - cron: '43 17 * * *'   # 매일 02:43 (한국 시간)
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/blog.yml', 'scripts/update_blog.py']
+
+permissions:
+  contents: write
+
+concurrency:
+  group: profile-auto-commit   # GitWorld와 같은 그룹: 두 자동 커밋이 겹치지 않게
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Update README from blog RSS
+        run: python3 scripts/update_blog.py
+
+      - name: Commit
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git diff --cached --quiet && exit 0
+          git commit -m "📰 블로그 글 목록 업데이트 $(date -u +'%Y-%m-%d')"
+          git pull --rebase origin main
+          git push
