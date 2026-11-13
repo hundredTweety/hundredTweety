@@ -106,7 +106,9 @@
 ## 📰 최근 쓴 글 <sub>· SSAFYcial 기사, 매일 자동 갱신</sub>
 
 <!-- BLOG:START -->
-- 블로그 글을 불러오는 중이에요.
+- `2026.11.03` [SSAFY가 시슐랭 후보에 올랐다고? 투표하면 경품까지](https://blog.naver.com/hundredhey/224463646142)
+- `2026.11.02` [싸피 밋업 후기 | SSAFY 16기 에버랜드 공모전 본선 발표까지](https://blog.naver.com/hundredhey/224462410542)
+- `2026.10.30` [SSAFY에서 삼성전자 개발자까지, 현직 선배에게 직접 물어봤습니다](https://blog.naver.com/hundredhey/224458668132)
 <!-- BLOG:END -->
 
 ## 🌆 Contribution City
